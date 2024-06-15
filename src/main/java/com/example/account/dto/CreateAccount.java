@@ -4,7 +4,7 @@ import lombok.*;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class CreateAccount {
     @Getter
@@ -27,6 +27,14 @@ public class CreateAccount {
     public static class Response {
         private Long userId;
         private String accountNumber;
-        private LocalDate registeredAt;
+        private LocalDateTime registeredAt;
+
+        public static Response from(AccountDto accountDto) {
+            return Response.builder()
+                    .userId(accountDto.getUserId())
+                    .accountNumber(accountDto.getAccountNumber())
+                    .registeredAt(accountDto.getRegisteredAt())
+                    .build();
+        }
     }
 }
