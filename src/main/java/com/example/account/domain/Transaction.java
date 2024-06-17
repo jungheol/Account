@@ -33,7 +33,7 @@ public class Transaction {
     private Long balanceSnapshot;
 
     private String transactionId;
-    private LocalDateTime transactionAt;
+    private LocalDateTime transactedAt;
 
     @CreatedDate
     private LocalDateTime createdAt;
