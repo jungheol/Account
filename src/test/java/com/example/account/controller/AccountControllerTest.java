@@ -53,7 +53,7 @@ class AccountControllerTest {
                         .build());
     // when
     // then
-        mockMvc.perform(post("/create-account")
+        mockMvc.perform(post("/account")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(
                         new CreateAccount.Request(1L, 100L)
