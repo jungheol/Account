@@ -63,14 +63,6 @@ public class AccountService {
     }
 
     @Transactional
-    public Account getAccount(Long id) {
-        if(id < 0){
-            throw new RuntimeException("Minus");
-        }
-        return accountRepository.findById(id).get();
-    }
-
-    @Transactional
     public AccountDto deleteAccount(Long userId, String accountNumber) {
         AccountUser accountUser = accountUserRepository.findById(userId)
                 .orElseThrow(() -> new AccountException(USER_NOT_FOUND));
