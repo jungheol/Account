@@ -46,7 +46,7 @@ class AccountControllerTest {
 
     @Test
     void successCreateAccount() throws Exception {
-    // given
+        // given
         given(accountService.createAccount(anyLong(), anyLong()))
                 .willReturn(AccountDto.builder()
                         .userId(1L)
@@ -54,13 +54,13 @@ class AccountControllerTest {
                         .registeredAt(LocalDateTime.now())
                         .unRegisteredAt(LocalDateTime.now())
                         .build());
-    // when
-    // then
+        // when
+        // then
         mockMvc.perform(post("/account")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(
-                        new CreateAccount.Request(1L, 100L)
-                )))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(
+                                new CreateAccount.Request(1L, 100L)
+                        )))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.userId").value(1))
                 .andExpect(jsonPath("$.accountNumber").value("1234567890"))
@@ -113,11 +113,11 @@ class AccountControllerTest {
         List<AccountDto> accountDtoList =
                 Arrays.asList(
                         AccountDto.builder()
-                        .accountNumber("1234567890")
-                        .balance(1000L).build(),
+                                .accountNumber("1234567890")
+                                .balance(1000L).build(),
                         AccountDto.builder()
-                        .accountNumber("1234567891")
-                        .balance(2000L).build()
+                                .accountNumber("1234567891")
+                                .balance(2000L).build()
                 );
         // given
         given(accountService.getAccountsByUserId(anyLong()))

@@ -49,7 +49,7 @@ public class TransactionService {
 
     private void validateUseBalance(AccountUser user, Account account, Long amount) {
         if (!Objects.equals(user.getId(), account.getAccountUser().getId())) {
-           throw new AccountException(ErrorCode.USER_ACCOUNT_UN_MATCHED);
+            throw new AccountException(ErrorCode.USER_ACCOUNT_UN_MATCHED);
         }
         if (account.getAccountStatus() != AccountStatus.IN_USE) {
             throw new AccountException(ErrorCode.ACCOUNT_ALREADY_UNREGISTERED);
