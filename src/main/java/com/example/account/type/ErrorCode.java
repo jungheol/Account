@@ -20,7 +20,8 @@ public enum ErrorCode {
     TOO_OLD_ORDER_TO_CANCEL("1년이 지난 거래는 취소가 불가능합니다."),
     ACCOUNT_ALREADY_UNREGISTERED("이미 해지된 계좌입니다."),
     BALANCE_NOT_EMPTY("잔액이 있는 계좌는 해지할 수 없습니다."),
-    MAX_ACCOUNT_PER_USER_10("사용자의 최대 계좌는 10개입니다.");
+    MAX_ACCOUNT_PER_USER_10("사용자의 최대 계좌는 10개입니다."),
+    ALREADY_EXIST_ACCOUNT("이미 존재하는 계좌 번호입니다.");
 
     private final String description;
 }

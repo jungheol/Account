@@ -95,7 +95,7 @@ class AccountServiceTest {
 
     @Test
     @DisplayName("계좌 생성 실패 - 해당 유저 없음")
-    void createAccount_UserNotFound() {
+    void createAccount_userNotFound() {
         // given
         given(accountUserRepository.findById(anyLong()))
                 .willReturn(Optional.empty());
@@ -128,6 +128,33 @@ class AccountServiceTest {
     }
 
     @Test
+    @DisplayName("계좌 생성 실패 - 계좌 번호 중복")
+    void createAccount_accountNumberAlreadyExist() {
+        AccountUser pobi = AccountUser.builder()
+                .name("Pobi").build();
+        pobi.setId(12L);
+        // given
+        given(accountUserRepository.findById(anyLong()))
+                .willReturn(Optional.of(pobi));
+        given(accountRepository.findFirstByOrderByIdDesc())
+                .willReturn(Optional.of(Account.builder()
+                        .accountUser(pobi)
+                        .accountNumber("1000000000")
+                        .build()));
+        given(accountRepository.findByAccountNumber("1000000001"))
+                .willReturn(Optional.of(Account.builder()
+                        .accountUser(pobi)
+                        .accountNumber("1000000001")
+                        .build()));
+        // when
+        AccountException accountException = assertThrows(AccountException.class,
+                () -> accountService.createAccount(12L, 1000L));
+
+        // then
+        assertEquals(ErrorCode.ALREADY_EXIST_ACCOUNT, accountException.getErrorCode());
+    }
+
+    @Test
     @DisplayName("계좌 해지 성공")
     void deleteAccountSuccess() {
         AccountUser user = AccountUser.builder()
@@ -156,7 +183,7 @@ class AccountServiceTest {
 
     @Test
     @DisplayName("계좌 해지 실패 - 해당 유저 없음")
-    void deleteAccount_UserNotFound() {
+    void deleteAccount_userNotFound() {
         // given
         given(accountUserRepository.findById(anyLong()))
                 .willReturn(Optional.empty());
@@ -171,7 +198,7 @@ class AccountServiceTest {
 
     @Test
     @DisplayName("계좌 해지 실패 - 해당 계좌 없음")
-    void deleteAccount_AccountNotFound() {
+    void deleteAccount_accountNotFound() {
         AccountUser user = AccountUser.builder()
                 .name("Pobi").build();
         user.setId(12L);

@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import java.util.Random;
 
 import static com.example.account.type.AccountStatus.IN_USE;
 import static com.example.account.type.ErrorCode.*;
@@ -38,10 +39,7 @@ public class AccountService {
 
         validateCreateAccount(accountUser);
 
-        // db에 계좌가 있다면 계좌번호에 +1 해서 새로운 계좌 생성, 없다면 10000000000 으로 계좌 생성
-        String newAccountNumber = accountRepository.findFirstByOrderByIdDesc()
-                  .map(account -> (Integer.parseInt(account.getAccountNumber())) + 1 + "")
-                  .orElse("1000000000");
+        String newAccountNumber = createNewAccountNumber();
 
         return AccountDto.fromEntity(
                 accountRepository.save(Account.builder()
@@ -52,6 +50,27 @@ public class AccountService {
                         .registeredAt(LocalDateTime.now())
                         .build())
         );
+    }
+
+    private String generateRandomAccountNumber() {
+        Random random = new Random();
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < 10; i++) {
+            sb.append(random.nextInt(10));
+        }
+        return sb.toString();
+    }
+
+    private String createNewAccountNumber() {
+        String newAccountNumber = accountRepository.findFirstByOrderByIdDesc()
+                  .map(account -> (Long.parseLong(account.getAccountNumber())) + 1 + "")
+                  .orElse(generateRandomAccountNumber());
+
+        if (accountRepository.findByAccountNumber(newAccountNumber).isPresent()) {
+            throw new AccountException(ALREADY_EXIST_ACCOUNT);
+        }
+
+        return newAccountNumber;
     }
 
     private void validateCreateAccount(AccountUser accountUser) {
