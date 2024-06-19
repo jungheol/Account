@@ -10,8 +10,6 @@ import com.example.account.repository.AccountUserRepository;
 import com.example.account.repository.TransactionRepository;
 import com.example.account.type.AccountStatus;
 import com.example.account.type.ErrorCode;
-import com.example.account.type.TransactionResultType;
-import com.example.account.type.TransactionType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -47,7 +45,7 @@ class TransactionServiceTest {
     private TransactionService transactionService;
 
     @Test
-    @DisplayName("성공 케이스")
+    @DisplayName("잔액 사용 성공")
     void successUseBalance() {
         AccountUser user = AccountUser.builder()
                 .name("Pobi").build();
@@ -89,7 +87,7 @@ class TransactionServiceTest {
     }
 
     @Test
-    @DisplayName("해당 유저 없음 - 잔액 사용 실패")
+    @DisplayName("잔액 사용 실패 - 해당 유저 없음")
     void useBalance_UserNotFound() {
         // given
         given(accountUserRepository.findById(anyLong()))
@@ -104,7 +102,7 @@ class TransactionServiceTest {
     }
 
     @Test
-    @DisplayName("해당 계좌 없음 - 잔액 사용 실패")
+    @DisplayName("잔액 사용 실패 - 해당 계좌 없음")
     void useBalance_AccountNotFound() {
         AccountUser user = AccountUser.builder()
                 .name("Pobi").build();
@@ -124,7 +122,7 @@ class TransactionServiceTest {
     }
 
     @Test
-    @DisplayName("계좌 소유주 다름")
+    @DisplayName("잔액 사용 실패 - 계좌 소유주 다름")
     void useBalance_userUnMatched() {
         AccountUser pobi = AccountUser.builder()
                 .name("Pobi").build();
@@ -150,7 +148,7 @@ class TransactionServiceTest {
     }
 
     @Test
-    @DisplayName("이미 해지된 계좌입니다.")
+    @DisplayName("잔액 사용 실패 - 이미 해지된 계좌입니다.")
     void useBalance_alreadyUnregistered() {
         AccountUser user = AccountUser.builder()
                 .name("Pobi").build();
@@ -174,7 +172,7 @@ class TransactionServiceTest {
     }
 
     @Test
-    @DisplayName("거래 금액이 잔액보다 큰 경우")
+    @DisplayName("잔액 사용 실패 - 거래 금액이 잔액보다 큰 경우")
     void useBalance_exceedAmount() {
         AccountUser user = AccountUser.builder()
                 .name("Pobi").build();
@@ -200,7 +198,7 @@ class TransactionServiceTest {
     }
 
     @Test
-    @DisplayName("실패 트랜잭션 저장 성공")
+    @DisplayName("잔액 사용 - 실패 트랜잭션 저장 성공")
     void useBalance_SaveFailedTransaction() {
         AccountUser user = AccountUser.builder()
                 .name("Pobi").build();
@@ -236,7 +234,7 @@ class TransactionServiceTest {
     }
 
     @Test
-    @DisplayName("취소 성공 케이스")
+    @DisplayName("잔액 사용 취소 성공")
     void successCancelTransaction() {
         AccountUser user = AccountUser.builder()
                 .name("Pobi").build();
@@ -287,7 +285,7 @@ class TransactionServiceTest {
     }
 
     @Test
-    @DisplayName("해당 계좌 없음 - 잔액 사용 취소 실패")
+    @DisplayName("잔액 사용 취소 실패 - 해당 계좌 없음")
     void cancelTransaction_AccountNotFound() {
         // given
         given(transactionRepository.findByTransactionId(anyString()))
@@ -304,7 +302,7 @@ class TransactionServiceTest {
     }
 
     @Test
-    @DisplayName("기존 사용 거래 없음 - 잔액 사용 취소 실패")
+    @DisplayName("잔액 사용 취소 실패 - 기존 사용 거래 없음")
     void cancelTransaction_TransactionNotFound() {
         // given
         given(transactionRepository.findByTransactionId(anyString()))
@@ -319,7 +317,7 @@ class TransactionServiceTest {
     }
 
     @Test
-    @DisplayName("거래와 계좌가 매칭 실패 - 잔액 사용 취소 실패")
+    @DisplayName("잔액 사용 취소 실패 - 거래와 계좌가 매칭 실패")
     void cancelTransaction_TransactionAccountUnMatched() {
         // given
         AccountUser user = AccountUser.builder()
@@ -360,7 +358,7 @@ class TransactionServiceTest {
     }
 
     @Test
-    @DisplayName("거래금액과 취소금액이 다름 - 잔액 사용 취소 실패")
+    @DisplayName("잔액 사용 취소 실패 - 거래금액과 취소금액이 다름")
     void cancelTransaction_CancelMustFully() {
         // given
         AccountUser user = AccountUser.builder()
@@ -395,7 +393,7 @@ class TransactionServiceTest {
     }
 
     @Test
-    @DisplayName("거래 기간이 너무 과거일 때 - 잔액 사용 취소 실패")
+    @DisplayName("잔액 사용 취소 실패 - 거래 기간이 너무 과거일 때")
     void cancelTransaction_TooOldDate() {
         // given
         AccountUser user = AccountUser.builder()
@@ -430,7 +428,7 @@ class TransactionServiceTest {
     }
 
     @Test
-    @DisplayName("Get Transaction Success")
+    @DisplayName("거래 확인 성공")
     void successQueryTransaction() {
         // given
         AccountUser user = AccountUser.builder()
@@ -447,7 +445,7 @@ class TransactionServiceTest {
                 .transactionType(USE)
                 .transactionResultType(S)
                 .transactionId("transactionId")
-                .transactedAt(LocalDateTime.now().minusYears(2))
+                .transactedAt(LocalDateTime.now())
                 .amount(1000L)
                 .balanceSnapshot(9000L)
                 .build();
@@ -465,7 +463,7 @@ class TransactionServiceTest {
     }
 
     @Test
-    @DisplayName("기존 사용 거래 없음 - 거래 조회 실패")
+    @DisplayName("거래 확인 실패 - 기존 사용 거래 없음")
     void queryTransaction_TransactionNotFound() {
         // given
         given(transactionRepository.findByTransactionId(anyString()))
