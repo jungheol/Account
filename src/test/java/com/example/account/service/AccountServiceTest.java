@@ -38,6 +38,7 @@ class AccountServiceTest {
     private AccountService accountService;
 
     @Test
+    @DisplayName("계좌 추가 성공")
     void createAccountSuccess() {
         AccountUser user = AccountUser.builder()
                             .name("Pobi").build();
@@ -66,6 +67,7 @@ class AccountServiceTest {
 
     // 첫 계좌 생성일 때..
     @Test
+    @DisplayName("계좌 생성 성공")
     void createFirstAccount() {
         AccountUser user = AccountUser.builder()
                 .name("Pobi").build();
@@ -92,7 +94,7 @@ class AccountServiceTest {
     }
 
     @Test
-    @DisplayName("해당 유저 없음 - 계좌 생성 실패")
+    @DisplayName("계좌 생성 실패 - 해당 유저 없음")
     void createAccount_UserNotFound() {
         // given
         given(accountUserRepository.findById(anyLong()))
@@ -107,7 +109,7 @@ class AccountServiceTest {
     }
 
     @Test
-    @DisplayName("유저 당 최대 계좌는 10개")
+    @DisplayName("계좌 생성 실패 - 유저 당 최대 계좌는 10개")
     void createAccount_maxAccountIs10() {
         AccountUser user = AccountUser.builder()
                 .name("Pobi").build();
@@ -126,6 +128,7 @@ class AccountServiceTest {
     }
 
     @Test
+    @DisplayName("계좌 해지 성공")
     void deleteAccountSuccess() {
         AccountUser user = AccountUser.builder()
                 .name("Pobi").build();
@@ -152,7 +155,7 @@ class AccountServiceTest {
     }
 
     @Test
-    @DisplayName("해당 유저 없음 - 계좌 해지 실패")
+    @DisplayName("계좌 해지 실패 - 해당 유저 없음")
     void deleteAccount_UserNotFound() {
         // given
         given(accountUserRepository.findById(anyLong()))
@@ -167,7 +170,7 @@ class AccountServiceTest {
     }
 
     @Test
-    @DisplayName("해당 계좌 없음 - 계좌 해지 실패")
+    @DisplayName("계좌 해지 실패 - 해당 계좌 없음")
     void deleteAccount_AccountNotFound() {
         AccountUser user = AccountUser.builder()
                 .name("Pobi").build();
@@ -187,7 +190,7 @@ class AccountServiceTest {
     }
 
     @Test
-    @DisplayName("계좌 소유주 다름")
+    @DisplayName("계좌 해지 실패 - 계좌 소유주 다름")
     void deleteAccountFailed_userUnMatched() {
         AccountUser pobi = AccountUser.builder()
                 .name("Pobi").build();
@@ -213,7 +216,7 @@ class AccountServiceTest {
     }
 
     @Test
-    @DisplayName("해당 계좌는 잔액이 있습니다.")
+    @DisplayName("계좌 해지 실패 - 해당 계좌는 잔액이 있습니다.")
     void deleteAccountFailed_balanceNotEmpty() {
         AccountUser user = AccountUser.builder()
                 .name("Pobi").build();
@@ -236,7 +239,7 @@ class AccountServiceTest {
     }
 
     @Test
-    @DisplayName("이미 해지된 계좌입니다.")
+    @DisplayName("계좌 해지 실패 - 이미 해지된 계좌입니다.")
     void deleteAccountFailed_alreadyUnregistered() {
         AccountUser user = AccountUser.builder()
                 .name("Pobi").build();
@@ -260,6 +263,7 @@ class AccountServiceTest {
     }
 
     @Test
+    @DisplayName("계좌 확인 성공")
     void successGetAccountsByUserId() {
         AccountUser user = AccountUser.builder()
                 .name("Pobi").build();
@@ -294,6 +298,7 @@ class AccountServiceTest {
     }
 
     @Test
+    @DisplayName("계좌 확인 실패 - 사용자가 없습니다.")
     void failedGetAccountsByUserId() {
         // given
         given(accountUserRepository.findById(anyLong()))
