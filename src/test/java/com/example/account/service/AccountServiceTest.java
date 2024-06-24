@@ -41,7 +41,7 @@ class AccountServiceTest {
     @DisplayName("계좌 추가 성공")
     void createAccountSuccess() {
         AccountUser user = AccountUser.builder()
-                            .name("Pobi").build();
+                .name("Pobi").build();
         user.setId(12L);
         // given
         given(accountUserRepository.findById(anyLong()))
@@ -80,7 +80,7 @@ class AccountServiceTest {
         given(accountRepository.save(any()))
                 .willReturn(Account.builder()
                         .accountUser(user)
-                        .accountNumber("1000000015").build());
+                        .accountNumber("1000000012").build());
 
         ArgumentCaptor<Account> captor = ArgumentCaptor.forClass(Account.class);
 
@@ -90,7 +90,7 @@ class AccountServiceTest {
         // then
         verify(accountRepository, times(1)).save(captor.capture());
         assertEquals(15L, accountDto.getUserId());
-        assertEquals("1000000000", captor.getValue().getAccountNumber());
+        assertEquals("1000000012", accountDto.getAccountNumber());
     }
 
     @Test
