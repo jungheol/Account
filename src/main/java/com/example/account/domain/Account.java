@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 @Entity
-public class Account extends BaseEntity{
+public class Account extends BaseEntity {
     @ManyToOne
     private AccountUser accountUser;
     private String accountNumber;

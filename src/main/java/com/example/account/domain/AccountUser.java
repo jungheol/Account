@@ -1,6 +1,7 @@
 package com.example.account.domain;
 
 import lombok.*;
+
 import javax.persistence.Entity;
 
 @Getter
@@ -9,6 +10,6 @@ import javax.persistence.Entity;
 @NoArgsConstructor
 @Builder
 @Entity
-public class AccountUser extends BaseEntity{
+public class AccountUser extends BaseEntity {
     private String name;
 }

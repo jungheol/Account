@@ -2,7 +2,6 @@ package com.example.account.service;
 
 import com.example.account.dto.UseBalance;
 import com.example.account.exception.AccountException;
-import com.example.account.type.ErrorCode;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

@@ -23,8 +23,8 @@ public class AccountController {
     ) {
         return CreateAccount.Response.from(
                 accountService.createAccount(
-                    request.getUserId(),
-                    request.getInitialBalance()
+                        request.getUserId(),
+                        request.getInitialBalance()
                 )
         );
     }
@@ -48,9 +48,9 @@ public class AccountController {
         return accountService.getAccountsByUserId(userId)
                 .stream().map(accountDto ->
                         AccountInfo.builder()
-                        .accountNumber(accountDto.getAccountNumber())
-                        .balance(accountDto.getBalance())
-                        .build())
+                                .accountNumber(accountDto.getAccountNumber())
+                                .balance(accountDto.getBalance())
+                                .build())
                 .collect(Collectors.toList());
     }
 

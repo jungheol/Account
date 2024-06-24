@@ -63,8 +63,8 @@ public class AccountService {
 
     private String createNewAccountNumber() {
         String newAccountNumber = accountRepository.findFirstByOrderByIdDesc()
-                  .map(account -> (Long.parseLong(account.getAccountNumber())) + 1 + "")
-                  .orElse(generateRandomAccountNumber());
+                .map(account -> (Long.parseLong(account.getAccountNumber())) + 1 + "")
+                .orElse(generateRandomAccountNumber());
 
         if (accountRepository.findByAccountNumber(newAccountNumber).isPresent()) {
             throw new AccountException(ALREADY_EXIST_ACCOUNT);
@@ -74,7 +74,7 @@ public class AccountService {
     }
 
     private void validateCreateAccount(AccountUser accountUser) {
-        if(accountRepository.countByAccountUser(accountUser) >= 10) {
+        if (accountRepository.countByAccountUser(accountUser) >= 10) {
             throw new AccountException(MAX_ACCOUNT_PER_USER_10);
         }
     }
@@ -92,7 +92,7 @@ public class AccountService {
         AccountUser accountUser = getAccountUser(userId);
         Account account = accountRepository.findByAccountNumber(accountNumber)
                 .orElseThrow(() -> new AccountException(ACCOUNT_NOT_FOUND));
-        
+
         validateDeleteAccount(accountUser, account);
 
         account.setAccountStatus(AccountStatus.UNREGISTERED);
@@ -104,13 +104,13 @@ public class AccountService {
     }
 
     private void validateDeleteAccount(AccountUser accountUser, Account account) {
-        if(!Objects.equals(accountUser.getId(), account.getAccountUser().getId())) {
+        if (!Objects.equals(accountUser.getId(), account.getAccountUser().getId())) {
             throw new AccountException(USER_ACCOUNT_UN_MATCHED);
         }
-        if(account.getAccountStatus() == AccountStatus.UNREGISTERED) {
+        if (account.getAccountStatus() == AccountStatus.UNREGISTERED) {
             throw new AccountException(ACCOUNT_ALREADY_UNREGISTERED);
         }
-        if(account.getBalance() > 0) {
+        if (account.getBalance() > 0) {
             throw new AccountException(BALANCE_NOT_EMPTY);
         }
     }
